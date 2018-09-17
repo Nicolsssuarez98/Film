@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>YouMovie | Otras</title>
+    <link rel="stylesheet" href="../../styles/index.css">
+    <style>.loader,.loader:after,.loader:before{background:#fff;-webkit-animation:load1 1s infinite ease-in-out;animation:load1 1s infinite ease-in-out;width:1em;height:4em}.loader{color:#fff;text-indent:-9999em;margin:88px auto;position:relative;font-size:11px;-webkit-transform:translateZ(0);-ms-transform:translateZ(0);transform:translateZ(0);-webkit-animation-delay:-.16s;animation-delay:-.16s}.loader:after,.loader:before{position:absolute;top:0;content:''}.loader:before{left:-1.5em;-webkit-animation-delay:-.32s;animation-delay:-.32s}.loader:after{left:1.5em}@-webkit-keyframes load1{0%,100%,80%{box-shadow:0 0;height:4em}40%{box-shadow:0 -2em;height:5em}}@keyframes load1{0%,100%,80%{box-shadow:0 0;height:4em}40%{box-shadow:0 -2em;height:5em}}</style>
+</head>
+<body>
+    <header>
+        <figure class="logo">
+            <img src="../../assets/img/logo.png" alt="YouMovie Logo">
+            <figcaption>YouMovie</figcaption>
+        </figure>
+        <nav>
+            <ul>
+                <div class="cover"></div>
+                <li><a href="../../index.html"><span class="cateory">Inicio</span></a></li>
+                <li><a href="../accion/index.html"><span class="cateory">Acción</span></a></li>
+                <li><a href="../comedia/index.html"><span class="cateory">Comedia</span></a></li>
+                <li><a href="../terror/index.html"><span class="cateory">Terror</span></a></li>
+                <li><a href="../romance/index.html"><span class="cateory">Romance</span></a></li>
+                <li><a href="../ciencia_ficcion/index.html"><span class="cateory">Ciencia Ficción</span></a></li>
+                <li><a href="#" class="active"><span class="cateory">Otras</span></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="search" id="app">
+        <div class="container">
+            <div class="text-field">
+                <input v-model="movie" @keyup.enter="search" type="text">
+                <span :class="movie ? 'placeholder' : 'placeholder active'">¿Que película buscas?</span>
+                <div class="search-icon" @click="search">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+        </div>
+        <div class="go-up" @click=goUp>
+            <i class="fas fa-angle-up"></i>
+        </div>
+        <section ref="movieSection" class="movies" v-show="movies.length">
+            <h2 class="results">{{movies.length}} resultados de la búsqueda <span ref="selectedMovie"></span> </h2>
+            <movie v-for="movie in movies"
+            @show=showModal(movie)
+            :movie=movie
+            :key="movie.id"
+            :imgurl="`${baseIMG}${movie.poster_path}`"
+            :title="movie.title"
+            :overview="movie.sumarizedOverview" @open="openModal(movie)"></movie>
+        </section>
+        <section ref="modal" class="modal search-movie" @click=closeModal>
+            <div class="content">
+                <div class="cover">
+                    <img :src=`${baseIMG}${selectedMovie.backdrop_path}`>
+                    <h1>{{selectedMovie.title}}</h1>
+                </div>
+                <div class="description">
+                    <p>{{selectedMovie.overview}}</p>
+                    <br>
+                    <p><strong>Fecha de lanzamiento: </strong>{{selectedMovie.release_date}}</p>
+                    <p><strong>Popularidad: </strong>{{selectedMovie.popularity}}</p>
+                </div>
+            </div>
+        </section>
+        <div ref="loader" class="loader-parent">
+            <div class="loader"></div>
+        </div>
+    </main>
+    <script src="../../js/swal.js"></script>
+    <script src="../../js/font-awesome.min.js"></script>    
+    <script src="../../js/vue.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>
